@@ -20,6 +20,28 @@ app.get('/ui/madi.png', function (req, res) {
 
 // Do not change port, otherwise your app won't run on IMAD servers
 // Use 8080 only for local development if you already have apache running on 80
+var Pool = require('pg').Pool;
+var config = {
+    user: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
+    database: process.env.DB_DATABASE
+};
+
+var pool = new Pool(config);
+
+app.get('/dbtest', function(req, res) {
+    console.log('start');
+    pool.query('SELECT * FROM hasura_db', function (err, result){
+        if (err) {
+            res.status(500).send(err.toString());
+        } else {
+            res.send(JSON.stringify(result));
+        }
+    });
+    console.log('end');
+    
+});
 
 var port = 80;
 app.listen(port, function () {
