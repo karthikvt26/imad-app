@@ -30,6 +30,10 @@ var config = {
 
 var pool = new Pool(config);
 
+app.get('/helloworld', function( req, res ) {
+    res.send('HelloWOrld');
+});
+
 app.get('/dbtest', function(req, res) {
     console.log('start');
     pool.query('SELECT * FROM hasura_db', function (err, result){
